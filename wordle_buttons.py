@@ -54,22 +54,15 @@ buttons = [
      "color_off": (255, 0, 0), "value": "I", "pressed": False,"delete": False, "quit": False},
     {"x": 460, "y": 160, "w": 50, "h": 50, "label": "K", "enabled": False, "color_on": (0, 255, 0),
      "color_off": (255, 0, 0), "value": "K", "pressed": False,"delete": False, "quit": False},
-    {"x": 470, "y": 220, "w": 50, "h": 50, "label": " ,", "enabled": False, "color_on": (0, 255, 0),
-     "color_off": (255, 0, 0), "value": ",", "pressed": False,"delete": False, "quit": False},
 
     {"x": 510, "y": 100, "w": 50, "h": 50, "label": "O", "enabled": False, "color_on": (0, 255, 0),
      "color_off": (255, 0, 0), "value": "O", "pressed": False,"delete": False, "quit": False},
     {"x": 520, "y": 160, "w": 50, "h": 50, "label": "L", "enabled": False, "color_on": (0, 255, 0),
      "color_off": (255, 0, 0), "value": "L", "pressed": False,"delete": False, "quit": False},
-    {"x": 530, "y": 220, "w": 50, "h": 50, "label": " .", "enabled": False, "color_on": (0, 255, 0),
-     "color_off": (255, 0, 0), "value": ".", "pressed": False,"delete": False, "quit": False},
+
 
     {"x": 570, "y": 100, "w": 50, "h": 50, "label": "P", "enabled": False, "color_on": (0, 255, 0),
      "color_off": (255, 0, 0), "value": "P", "pressed": False,"delete": False, "quit": False},
-
-
-    {"x": 170, "y": 280, "w": 290, "h": 50, "label": "Space", "enabled": False, "color_on": (0, 255, 0),
-     "color_off": (255, 0, 0), "value": " ", "pressed": False,"delete": False, "quit": False},
     {"x": 630, "y": 100, "w": 80, "h": 50, "label": " <-", "enabled": False, "color_on": (0, 255, 0),
      "color_off": (255, 0, 0), "value": "", "pressed": False, "delete": True, "quit": False},
 

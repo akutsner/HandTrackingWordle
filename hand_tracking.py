@@ -113,7 +113,7 @@ while True:
 
     #joins buttons string
     pressed_string = "".join(pressed_list)
-    cv2.putText(img, str(pressed_string), (100, 75), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    cv2.putText(img, str(pressed_string), (900, 75), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
     #fps
     cTime = time.time()
