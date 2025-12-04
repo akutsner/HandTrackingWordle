@@ -13,9 +13,6 @@ pTime = 0
 button_cooldown = 0
 pressed_list = []
 
-# Button definitions (defined OUTSIDE the loop)
-
-
 
 def get_fingers_down(handLms, h, w):
     lm = []
@@ -105,8 +102,12 @@ while True:
                 elif button["quit"] == True:
                     cap.release()
                     cv2.destroyAllWindows()
+
+
                 else:
-                    pressed_list.append(button["value"])
+                    if len(pressed_list) < 5:
+                        pressed_list.append(button["value"])
+
                     button["pressed"] = True
                     button_cooldown = 15
             if not hovering:
@@ -115,7 +116,7 @@ while True:
 
     #joins buttons string
     pressed_string = "".join(pressed_list)
-    cv2.putText(img, str(pressed_string), (200, 200), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    cv2.putText(img, str(pressed_string), (100, 75), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
     #fps
     cTime = time.time()
