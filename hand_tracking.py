@@ -103,11 +103,8 @@ while True:
                     cap.release()
                     cv2.destroyAllWindows()
 
-
                 else:
-                    if len(pressed_list) < 5:
-                        pressed_list.append(button["value"])
-
+                    pressed_list.append(button["value"])
                     button["pressed"] = True
                     button_cooldown = 15
             if not hovering:
