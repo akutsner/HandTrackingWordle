@@ -15,7 +15,8 @@ mpDraw = mp.solutions.drawing_utils
 pTime = 0
 button_cooldown = 0
 pressed_list = []
-
+game_message = ""
+message_timer = 0
 
 def get_fingers_down(handLms, h, w):
     lm = []
@@ -105,12 +106,27 @@ while True:
                 elif button["quit"] == True:
                     cap.release()
                     cv2.destroyAllWindows()
-                elif button.get("enter") == True:
-                    if "".join(pressed_list) == secret_word:
-                        print("You won!")
-                    else:
-                        print("Sorry, you lost!")
+                elif button.get("enter"):
+                    guess = "".join(pressed_list)
 
+                    if len(pressed_list) < 5:
+                        game_message = "Not enough letters!"
+                        message_timer = 60  # show 1 second
+                    elif guess not in wordle_words:
+                        game_message = "Not in word list!"
+                        message_timer = 60
+                    elif guess == secret_word:
+                        game_message = "YOU WON!"
+                        message_timer = 120  # show 2 seconds
+                        secret_word = random.choice(list(wordle_words.keys()))
+                        pressed_list.clear()
+                    else:
+                        game_message = "Incorrect!"
+                        message_timer = 60
+
+                    pressed_list.clear()
+                    button["pressed"] = True
+                    button_cooldown = 15
 
                 else:
                     if len(pressed_list) < 5:
@@ -132,7 +148,9 @@ while True:
     pTime = cTime
     cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
-
+    if message_timer > 0:
+        cv2.putText(img, game_message, (850, 125), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+        message_timer -= 1
 
     cv2.imshow("Image", img)
     key = cv2.waitKey(1) & 0xFF
