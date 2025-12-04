@@ -1,7 +1,10 @@
+import random
+
 import cv2
 import mediapipe as mp
 import time
 from wordle_buttons import buttons
+from wordle_choices import wordle_words
 
 cap = cv2.VideoCapture(0)
 
@@ -37,7 +40,7 @@ def thumbs_up(handLms, h, w):
         fingers = {}
         fingers["thumb"] = lm[4][1] < lm[6][1]
 """
-
+secret_word = random.choice(list(wordle_words.keys()))
 
 #Loop
 while True:
@@ -102,6 +105,11 @@ while True:
                 elif button["quit"] == True:
                     cap.release()
                     cv2.destroyAllWindows()
+                elif button.get("enter") == True:
+                    if "".join(pressed_list) == secret_word:
+                        print("You won!")
+                    else:
+                        print("Sorry, you lost!")
 
 
                 else:
