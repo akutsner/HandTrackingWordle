@@ -76,6 +76,5 @@ buttons = [
 
     {"x": 580, "y": 160, "w": 110, "h": 50, "label": "Enter", "enabled": False, "color_on": (0, 255, 0),
      "color_off": (255, 0, 0), "value": "", "pressed": False, "enter": True, "delete": False, "quit": False},
-
 ]
 

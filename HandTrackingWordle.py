@@ -15,6 +15,8 @@ mpDraw = mp.solutions.drawing_utils
 pTime = 0
 button_cooldown = 0
 pressed_list = []
+used_letters = []
+correct_letters = []
 game_message = ""
 message_timer = 0
 
@@ -113,7 +115,18 @@ while True:
                         game_message = "Not enough letters!"
                         message_timer = 60  # show 1 second
                     elif guess not in wordle_words:
-                        game_message = "Not in word list!"
+                        for i in range(len(guess)):
+                            if guess[i] == secret_word[i]:
+                                game_message += "*"
+                                if guess[i] not in correct_letters:
+                                    correct_letters.append(guess[i])
+
+                            else:
+                                game_message += "_"
+                                if guess[i] not in correct_letters:
+                                    used_letters.append(guess[i])
+
+
                         message_timer = 60
                     elif guess == secret_word:
                         game_message = "YOU WON!"
@@ -151,6 +164,15 @@ while True:
     if message_timer > 0:
         cv2.putText(img, game_message, (850, 125), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
         message_timer -= 1
+
+
+    cv2.putText(img, str("Correct"), (300, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    correct_str = "".join(correct_letters)
+    cv2.putText(img, str(correct_str), (300, 500), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+
+    cv2.putText(img, str("Used"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    used_str = "".join(used_letters)
+    cv2.putText(img, str(used_str), (600, 500), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
     cv2.imshow("Image", img)
     key = cv2.waitKey(1) & 0xFF
