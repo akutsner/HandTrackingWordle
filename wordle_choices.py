@@ -1,8 +1,8 @@
-wordle_words = {
+wordle_words2 = {
     "APPLE": True,
     "BRAVE": True,
 }
-wordle_words2 = {
+wordle_words = {
     "APPLE": True,
     "BRAVE": True,
     "CHAIR": True,

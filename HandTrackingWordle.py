@@ -15,8 +15,7 @@ mpDraw = mp.solutions.drawing_utils
 pTime = 0
 button_cooldown = 0
 pressed_list = []
-used_letters = []
-correct_letters = []
+words = []
 game_message = ""
 message_timer = 0
 
@@ -108,39 +107,48 @@ while True:
                 elif button["quit"] == True:
                     cap.release()
                     cv2.destroyAllWindows()
-                elif button.get("enter"):
+                elif button.get("enter") == True:
                     guess = "".join(pressed_list)
+                    words.append(guess)
 
-                    if len(pressed_list) < 5:
+                    # Not enough letters
+                    if len(guess) < 5:
                         game_message = "Not enough letters!"
-                        message_timer = 60  # show 1 second
+                        message_timer = 60
+
+                    # Invalid word
                     elif guess not in wordle_words:
-                        for i in range(len(guess)):
-                            if guess[i] == secret_word[i]:
-                                game_message += "*"
-                                if guess[i] not in correct_letters:
-                                    correct_letters.append(guess[i])
-
-                            else:
-                                game_message += "_"
-                                if guess[i] not in correct_letters:
-                                    used_letters.append(guess[i])
-
-
+                        game_message = "Not in word list!"
                         message_timer = 60
-                    elif guess == secret_word:
-                        game_message = "YOU WON!"
-                        message_timer = 120  # show 2 seconds
-                        secret_word = random.choice(list(wordle_words.keys()))
-                        pressed_list.clear()
+
                     else:
-                        game_message = "Incorrect!"
-                        message_timer = 60
+                        for i in range(5):
+                            for b in buttons:
+                                if b.get("value") == guess[i]:
+
+                                    if guess[i] == secret_word[i]:
+                                        b["color_off"] = b["color_correct"]
+
+                                    elif guess[i] in secret_word:
+                                        if b["color_off"] != b["color_correct"]:
+                                            b["color_off"] = b["color_present"]
+                                    else:
+
+                                        if (b["color_off"] != b["color_correct"] and b["color_off"] != b["color_present"]):
+                                            b["color_off"] = b["color_absent"]
+
+                        if guess == secret_word:
+                            game_message = "YOU WON!"
+                            message_timer = 120
+                            secret_word = random.choice(list(wordle_words.keys()))
+
+                        else:
+                            game_message = guess
+                            message_timer = 60
 
                     pressed_list.clear()
                     button["pressed"] = True
                     button_cooldown = 15
-
                 else:
                     if len(pressed_list) < 5:
                         pressed_list.append(button["value"])
@@ -166,13 +174,14 @@ while True:
         message_timer -= 1
 
 
-    cv2.putText(img, str("Correct"), (300, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
-    correct_str = "".join(correct_letters)
-    cv2.putText(img, str(correct_str), (300, 500), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
-    cv2.putText(img, str("Used"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
-    used_str = "".join(used_letters)
-    cv2.putText(img, str(used_str), (600, 500), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+
+    cv2.putText(img, str("Words"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    words_display = "".join(words)
+    y_offset = 500
+    for i, w in enumerate(words):
+        cv2.putText(img, w.strip(), (600, y_offset + i * 40),
+                    cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
     cv2.imshow("Image", img)
     key = cv2.waitKey(1) & 0xFF
