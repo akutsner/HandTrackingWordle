@@ -29,14 +29,6 @@ def get_fingers_down(handLms, h, w):
 
     return fingers
 
-"""
-def thumbs_up(handLms, h, w):
-    lm = []
-    for id, l in enumerate(handLms.landmark):
-        lm.append((int(l.x * w), int(l.y * h)))
-        fingers = {}
-        fingers["thumb"] = lm[4][1] < lm[6][1]
-"""
 
 
 #Loop

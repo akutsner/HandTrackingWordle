@@ -18,6 +18,7 @@ pressed_list = []
 words = []
 game_message = ""
 message_timer = 0
+guess_num = 0
 
 def get_fingers_down(handLms, h, w):
     lm = []
@@ -110,6 +111,7 @@ while True:
                 elif button.get("enter") == True:
                     guess = "".join(pressed_list)
                     words.append(guess)
+                    guess_num += 1
 
                     # Not enough letters
                     if len(guess) < 5:
@@ -146,7 +148,7 @@ while True:
                             game_message = guess
                             message_timer = 60
 
-                    pressed_list.clear()
+                    
                     button["pressed"] = True
                     button_cooldown = 15
                 else:
@@ -161,22 +163,33 @@ while True:
 
     #joins buttons string
     pressed_string = "".join(pressed_list)
-    cv2.putText(img, str(pressed_string), (900, 75), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    y_val = 60
+    if guess_num == 0:
+        y_val = 60
+    elif guess_num == 1:
+        y_val = 120
+    elif guess_num == 2:
+        y_val = 180
+    elif guess_num == 3:
+        y_val = 240
+    elif guess_num == 4:
+        y_val = 300
+    cv2.putText(img, str(pressed_string), (900, y_val), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
     #fps
     cTime = time.time()
     fps = 1 / (cTime - pTime)
     pTime = cTime
-    cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (57, 117, 32), 3)
 
     if message_timer > 0:
-        cv2.putText(img, game_message, (850, 125), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+        cv2.putText(img, game_message, (850, 125), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 3)
         message_timer -= 1
 
 
 
 
-    cv2.putText(img, str("Words"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    cv2.putText(img, str("Guessed Words"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
     words_display = "".join(words)
     y_offset = 500
     for i, w in enumerate(words):
