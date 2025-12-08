@@ -186,7 +186,7 @@ while True:
 
 
 
-    cv2.putText(img, str("Guessed Words"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    cv2.putText(img, str("Guessed Words!"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
     words_display = "".join(words)
     y_offset = 500
     for i, w in enumerate(words):
