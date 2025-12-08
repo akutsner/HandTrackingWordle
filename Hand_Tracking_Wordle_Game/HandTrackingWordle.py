@@ -3,8 +3,8 @@ import random
 import cv2
 import mediapipe as mp
 import time
-from wordle_buttons import buttons
-from wordle_choices import wordle_words
+from Hand_Tracking_Wordle_Game.Buttons.wordle_buttons import buttons
+from Hand_Tracking_Wordle_Game.Words.wordle_choices import wordle_words
 
 cap = cv2.VideoCapture(0)
 
@@ -140,7 +140,7 @@ while True:
                                             b["color_off"] = b["color_absent"]
 
                         if guess == secret_word:
-                            game_message = "YOU WON!"
+                            game_message = guess + " YOU WON!"
                             message_timer = 120
                             secret_word = random.choice(list(wordle_words.keys()))
 
@@ -161,20 +161,17 @@ while True:
                 button["pressed"] = False
             button["enabled"] = hovering and index_only
 
-    #joins buttons string
-    pressed_string = "".join(pressed_list)
-    y_val = 60
-    if guess_num == 0:
-        y_val = 60
-    elif guess_num == 1:
-        y_val = 120
-    elif guess_num == 2:
-        y_val = 180
-    elif guess_num == 3:
-        y_val = 240
-    elif guess_num == 4:
-        y_val = 300
-    cv2.putText(img, str(pressed_string), (900, y_val), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+
+    start_x = 900
+    start_y = 60
+    row_gap = 60
+
+
+    for i, guess in enumerate(words):
+        cv2.putText(img, guess,(start_x, start_y + i * row_gap), cv2.FONT_HERSHEY_PLAIN,3,(255, 0, 255), 3)
+
+
+    cv2.putText(img, "".join(pressed_list), (start_x, start_y + len(words) * row_gap), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
     #fps
     cTime = time.time()
