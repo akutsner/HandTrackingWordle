@@ -111,15 +111,12 @@ while True:
                 elif button.get("enter") == True and guess_num < 6:
                     guess = "".join(pressed_list)
                     pressed_list.clear()
-
                     guess_num += 1
 
-                    # Not enough letters
                     if len(guess) < 5:
                         game_message = "Not enough letters!"
                         message_timer = 60
 
-                    # Invalid word
                     if guess not in wordle_words:
                         game_message = "Not in word list!"
                         message_timer = 60
