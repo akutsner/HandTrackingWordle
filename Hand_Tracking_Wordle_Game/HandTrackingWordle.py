@@ -56,10 +56,8 @@ while True:
     # Draw buttons
     for button in buttons:
         color = button["color_on"] if button["enabled"] else button["color_off"]
-        cv2.rectangle(img, (button["x"], button["y"]), (button["x"] + button["w"], button["y"] + button["h"]),
-                      color, -1)
-        cv2.putText(img, f"{button['label']}", (button["x"] + 10, button["y"] + 40), cv2.FONT_HERSHEY_PLAIN, 2,
-                    text_color, 2)
+        cv2.rectangle(img, (button["x"], button["y"]), (button["x"] + button["w"], button["y"] + button["h"]),color, -1)
+        cv2.putText(img, f"{button['label']}", (button["x"] + 10, button["y"] + 40), cv2.FONT_HERSHEY_PLAIN, 2,text_color, 2)
     # Hand landmarks
     if results.multi_hand_landmarks:
         handLms = results.multi_hand_landmarks[0]
