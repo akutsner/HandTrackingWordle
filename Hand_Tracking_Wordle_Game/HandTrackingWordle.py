@@ -108,9 +108,10 @@ while True:
                 elif button["quit"] == True:
                     cap.release()
                     cv2.destroyAllWindows()
-                elif button.get("enter") == True:
+                elif button.get("enter") == True and guess_num < 6:
                     guess = "".join(pressed_list)
-                    words.append(guess)
+                    pressed_list.clear()
+
                     guess_num += 1
 
                     # Not enough letters
@@ -119,7 +120,7 @@ while True:
                         message_timer = 60
 
                     # Invalid word
-                    elif guess not in wordle_words:
+                    if guess not in wordle_words:
                         game_message = "Not in word list!"
                         message_timer = 60
 
@@ -142,10 +143,12 @@ while True:
                         if guess == secret_word:
                             game_message = guess + " YOU WON!"
                             message_timer = 120
+                            words.append(guess)
                             secret_word = random.choice(list(wordle_words.keys()))
 
                         else:
-                            game_message = guess
+                            game_message = "Not Quiet!"
+                            words.append(guess)
                             message_timer = 60
 
                     
@@ -180,7 +183,7 @@ while True:
     cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (57, 117, 32), 3)
 
     if message_timer > 0:
-        cv2.putText(img, game_message, (850, 125), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 3)
+        cv2.putText(img, game_message, (850, 30), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 3)
         message_timer -= 1
 
 
