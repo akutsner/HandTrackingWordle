@@ -31,6 +31,8 @@ def get_fingers_down(handLms, h, w):
 
 
 
+
+
 #Loop
 while True:
     success, img = cap.read()
@@ -69,6 +71,13 @@ while True:
                     fingers_down["pinky"] == False
 
             )
+            all_down = (
+                    fingers_down["index"] == False and
+                    fingers_down["middle"] == False and
+                    fingers_down["ring"] == False and
+                    fingers_down["pinky"] == False
+
+            )
 
         mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
@@ -102,6 +111,18 @@ while True:
             if not hovering:
                 button["pressed"] = False
             button["enabled"] = hovering and index_only
+
+
+    if index_x is not None and all_down:
+        button = buttons[28]
+        if not button["pressed"] and button_cooldown == 0:
+            pressed_list.append(button["value"])
+            button["pressed"] = True
+            button_cooldown = 15
+
+    if not all_down:
+        buttons[28]["pressed"] = False
+
 
     #joins buttons string
     pressed_string = "".join(pressed_list)
