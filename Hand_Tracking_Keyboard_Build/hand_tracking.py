@@ -113,15 +113,14 @@ while True:
             button["enabled"] = hovering and index_only
 
 
-    if index_x is not None and all_down:
+    if index_x is not None:
         button = buttons[28]
         if not button["pressed"] and button_cooldown == 0:
             pressed_list.append(button["value"])
             button["pressed"] = True
             button_cooldown = 15
 
-    if not all_down:
-        buttons[28]["pressed"] = False
+
 
 
     #joins buttons string
