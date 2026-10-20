@@ -47,7 +47,7 @@ while True:
     results = hands.process(imgRGB)
 
     index_x = index_y = None
-    """hi"""
+
     # Hand landmarks
     if results.multi_hand_landmarks:
         handLms = results.multi_hand_landmarks[0]
