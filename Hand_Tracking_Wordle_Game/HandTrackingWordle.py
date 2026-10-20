@@ -20,6 +20,7 @@ game_message = ""
 message_timer = 0
 guess_num = 0
 
+
 def get_fingers_down(handLms, h, w):
     lm = []
     for id, l in enumerate(handLms.landmark):
@@ -36,9 +37,25 @@ def get_fingers_down(handLms, h, w):
     return fingers
 
 
+def get_fist(handLms, h, w):
+    lm = []
+    for id, l in enumerate(handLms.landmark):
+        lm.append((int(l.x * w), int(l.y * h)))
+
+    fingers = {}
+
+    fingers["thumb"] = lm[4][1] < lm[2][1]
+    fingers["index"] = lm[8][1] < lm[6][1]
+    fingers["middle"] = lm[12][1] < lm[10][1]
+    fingers["ring"] = lm[16][1] < lm[14][1]
+    fingers["pinky"] = lm[20][1] < lm[18][1]
+
+    return fingers
+
+
 secret_word = random.choice(list(wordle_words.keys()))
 
-#Loop
+# Loop
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
@@ -49,8 +66,10 @@ while True:
     # Draw buttons
     for button in buttons:
         color = button["color_on"] if button["enabled"] else button["color_off"]
-        cv2.rectangle(img, (button["x"], button["y"]), (button["x"] + button["w"], button["y"] + button["h"]),color, -1)
-        cv2.putText(img, f"{button['label']}", (button["x"] + 10, button["y"] + 40), cv2.FONT_HERSHEY_PLAIN, 2,text_color, 2)
+        cv2.rectangle(img, (button["x"], button["y"]), (button["x"] + button["w"], button["y"] + button["h"]), color,
+                      -1)
+        cv2.putText(img, f"{button['label']}", (button["x"] + 10, button["y"] + 40), cv2.FONT_HERSHEY_PLAIN, 2,
+                    text_color, 2)
     # Hand landmarks
     if results.multi_hand_landmarks:
         handLms = results.multi_hand_landmarks[0]
@@ -72,24 +91,31 @@ while True:
                     fingers_down["middle"] == False and
                     fingers_down["ring"] == False and
                     fingers_down["pinky"] == False
-
             )
 
         mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
 
-
+        fist = get_fist(handLms, h, w)
+        fist_only = (
+                fingers_down["thumb"] == False and
+                fingers_down["index"] == False and
+                fingers_down["middle"] == False and
+                fingers_down["ring"] == False and
+                fingers_down["pinky"] == False
+        )
     # Index out all the rest down for button press
-
+    if fist_only:
+        pressed_list.clear()
 
     # Button hover & press logic
     if button_cooldown > 0:
         button_cooldown -= 1
 
-
-    #pressing buttons
+    # pressing buttons
     if index_x is not None and index_only:
         for button in buttons:
-            hovering = button["x"] <= index_x <= button["x"] + button["w"] and button["y"] <= index_y <= button["y"] + button["h"]
+            hovering = button["x"] <= index_x <= button["x"] + button["w"] and button["y"] <= index_y <= button["y"] + \
+                       button["h"]
             if hovering and not button["pressed"] and button_cooldown == 0:
                 if button["delete"] == True:
                     if len(pressed_list) > 0:
@@ -125,7 +151,8 @@ while True:
                                             b["color_off"] = b["color_present"]
                                     else:
 
-                                        if (b["color_off"] != b["color_correct"] and b["color_off"] != b["color_present"]):
+                                        if (b["color_off"] != b["color_correct"] and b["color_off"] != b[
+                                            "color_present"]):
                                             b["color_off"] = b["color_absent"]
 
                         if guess == secret_word:
@@ -139,7 +166,6 @@ while True:
                             words.append(guess)
                             message_timer = 60
 
-                    
                     button["pressed"] = True
                     button_cooldown = 15
                 else:
@@ -152,19 +178,17 @@ while True:
                 button["pressed"] = False
             button["enabled"] = hovering and index_only
 
-
     start_x = 900
     start_y = 60
     row_gap = 60
 
-
     for i, guess in enumerate(words):
-        cv2.putText(img, guess,(start_x, start_y + i * row_gap), cv2.FONT_HERSHEY_PLAIN,3,(255, 0, 255), 3)
+        cv2.putText(img, guess, (start_x, start_y + i * row_gap), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
+    cv2.putText(img, "".join(pressed_list), (start_x, start_y + len(words) * row_gap), cv2.FONT_HERSHEY_PLAIN, 3,
+                (255, 0, 255), 3)
 
-    cv2.putText(img, "".join(pressed_list), (start_x, start_y + len(words) * row_gap), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
-
-    #fps
+    # fps
     cTime = time.time()
     fps = 1 / (cTime - pTime)
     pTime = cTime
@@ -173,9 +197,6 @@ while True:
     if message_timer > 0:
         cv2.putText(img, game_message, (850, 30), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 3)
         message_timer -= 1
-
-
-
 
     cv2.putText(img, str("Guessed Words!"), (600, 400), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
     words_display = "".join(words)
@@ -189,9 +210,5 @@ while True:
     if key == ord('q'):
         break
 
-
-
-
 cap.release()
 cv2.destroyAllWindows()
-
