@@ -1,4 +1,4 @@
-# ✋ HandTrackingWordle
+#  HandTrackingWordle
 
 **Play Wordle without touching your keyboard.** A webcam and a real-time hand-tracking pipeline turn your index finger into a cursor over an on-screen keyboard. Point to type, make a fist to clear.
 
@@ -14,8 +14,8 @@
 1. **Capture:** OpenCV reads frames from the webcam.
 2. **Track:** MediaPipe Hands finds the **21 hand landmarks** on each frame (see the landmark diagram below).
 3. **Classify the gesture:** finger states are worked out by comparing each fingertip to its middle joint:
-   - ☝️ **Index finger only**: hover over a key to press it.
-   - ✊ **Fist**: clear the current guess.
+   -  **Index finger only**: hover over a key to press it.
+   -  **Fist**: clear the current guess.
 4. **Debounce:** a frame-based cooldown keeps one hover from registering as several presses.
 5. **Game logic:** guesses are checked against a word list, and keys are coloured green (right letter, right spot) or yellow (right letter, wrong spot), with six tries.
 
